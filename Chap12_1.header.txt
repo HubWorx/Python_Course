@@ -1,0 +1,27 @@
+HTTP/1.1 200 OK
+Dat
+e: Wed, 22 Nov 2017
+17:34:56 GMT
+Server
+: Apache/2.4.7 (Ubun
+tu)
+Last-Modified:
+Sat, 13 May 2017 11:
+22:22 GMT
+ETag: "1d
+3-54f6609240717"
+Ac
+cept-Ranges: bytes
+
+Content-Length: 467
+
+Cache-Control: max-
+age=0, no-cache, no-
+store, must-revalida
+te
+Pragma: no-cache
+
+Expires: Wed, 11 J
+an 1984 05:00:00 GMT
+
+Connection: close
