@@ -17,4 +17,4 @@ for line in fh:
     total = total + num
 print("Avgerage spam confidence: ", total/count)
 
-dc
+decode
