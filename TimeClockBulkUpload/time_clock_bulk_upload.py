@@ -263,10 +263,8 @@ class TimeClockApp(tk.Tk):
         for label, field_id in FIELDS:
             user[field_id] = self.entries[field_id].get().strip()
 
-        # ID, First and Last are required. Pin/Passcode are optional.
+        # All fields are required.
         for label, field_id in FIELDS:
-            if field_id in ("Pin", "Passcode"):
-                continue
             if not user[field_id]:
                 messagebox.showwarning("Missing field",
                                        "'{}' is required.".format(label))

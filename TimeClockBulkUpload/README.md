@@ -73,8 +73,7 @@ pyinstaller --onefile --windowed --name TimeClockBulkUpload --collect-all openpy
 
 ## Notes
 
-- **Required fields:** ID, First Name and Last Name. Pin and Passcode are
-  optional (left blank they are written as e.g. `Pin=`).
+- **Required fields:** all five — ID, First Name, Last Name, Pin and Passcode.
 - Values may not contain a comma or an equals sign, since those characters
   delimit the file format; the app blocks them on entry.
 - IDs are compared smartly: `1`, `1.0` and `"1"` are treated as the same ID,
