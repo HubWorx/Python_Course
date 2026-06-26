@@ -1,82 +1,62 @@
 # Time Clock Bulk Upload
 
-A small standalone desktop app for adding users to a time clock system and
-generating a bulk-upload file.
+A single-file web app for adding users to a time clock system and generating a
+bulk-upload file. It's just **`index.html`** — no install, no Python, works on
+any OS. Double-click it to open in a browser, or share the one file with anyone.
 
-## What it does
+## How to use
 
-1. You enter users one at a time: **ID, First Name, Last Name, Pin, Passcode**.
-2. You can add as many users as you like. Nothing is written to disk until you
-   click **Generate File**.
-3. It writes **`Ecuser.txt`**, where every user is one line and every field is
-   written as `fieldID=fieldvalue`, with fields separated by commas:
+1. Open **`index.html`** in a web browser (Chrome, Edge, Firefox, or Safari).
+2. *(Optional)* Under **Excel record**, click **Load existing record** and pick
+   your most recent `TimeClockUsers_*.xlsx`. This loads every user already in it
+   so their IDs are blocked as duplicates.
+3. Enter a user — **ID, First Name, Last Name, Pin, Passcode** — and click
+   **Add User** (or press Enter). Repeat for as many users as you need.
+4. Click **Generate Files**. The app downloads:
+   - **`Ecuser.txt`** — the batch you just entered, ready to upload.
+   - **`TimeClockUsers_YYYY-MM-DD.xlsx`** — a brand-new dated workbook containing
+     **every** user (the ones loaded in step 2 plus the new batch).
+5. Next time, load that dated `.xlsx` in step 2 to carry the running record
+   forward and keep blocking duplicate IDs.
 
-   ```
-   id=1,First=John,Last=Doe,Pin=1234,Passcode=5678
-   id=2,First=Jane,Last=Smith,Pin=4321,Passcode=8765
-   ```
+## The `Ecuser.txt` format
 
-   The field IDs written to the file are:
-
-   | Prompt      | Field ID in file |
-   | ----------- | ---------------- |
-   | ID          | `id`             |
-   | First Name  | `First`          |
-   | Last Name   | `Last`           |
-   | Pin         | `Pin`            |
-   | Passcode    | `Passcode`       |
-
-4. **Excel record (to prevent duplicate IDs).** You can link the app to an
-   Excel workbook (`.xlsx`). When you link an existing file the app reads all
-   IDs already in it; when you generate a batch the new users are appended to
-   the workbook. Any ID that already exists — in the workbook or in the current
-   batch — is rejected, so you never reuse an ID.
-
-   - **New record…** creates a fresh workbook with a header row.
-   - **Link existing…** points the app at a workbook you already have. The
-     **first column** is treated as the ID column and the first row as a header.
-
-## Running from source (any OS)
-
-```bash
-pip install openpyxl          # optional: enables the Excel record feature
-python time_clock_bulk_upload.py
-```
-
-The app runs without `openpyxl`; only the Excel record feature is disabled in
-that case (`Ecuser.txt` generation still works).
-
-## Building the Windows .exe
-
-On a Windows machine with Python 3 installed, just run:
-
-```bat
-build_exe.bat
-```
-
-It installs `openpyxl` and `pyinstaller`, then builds the executable. When it
-finishes, your standalone app is at:
+Every user is one line; every field is written as `fieldID=fieldvalue` with
+fields separated by commas:
 
 ```
-dist\TimeClockBulkUpload.exe
+id=1,First=John,Last=Doe,Pin=1234,Passcode=5678
+id=2,First=Jane,Last=Smith,Pin=4321,Passcode=8765
 ```
 
-That `.exe` is self-contained — it can be copied to another Windows PC and run
-without installing Python.
+Field IDs written to the file:
 
-To build it manually instead:
+| Prompt      | Field ID in file |
+| ----------- | ---------------- |
+| ID          | `id`             |
+| First Name  | `First`          |
+| Last Name   | `Last`           |
+| Pin         | `Pin`            |
+| Passcode    | `Passcode`       |
 
-```bat
-pip install openpyxl pyinstaller
-pyinstaller --onefile --windowed --name TimeClockBulkUpload --collect-all openpyxl time_clock_bulk_upload.py
-```
+## How duplicate IDs are prevented
+
+The downloaded `.xlsx` is a running record. Because browsers can't silently
+re-write a file on your disk, the flow is **load-in / save-out**: you load the
+latest record when you start, and the app saves a new dated record when you
+finish. Any ID already present — in the loaded record **or** in the current
+batch — is rejected when you click *Add User*. (IDs are matched smartly, so
+`1`, `1.0` and `"1"` count as the same ID, since Excel sometimes stores whole
+numbers as `1.0`.)
 
 ## Notes
 
-- **Required fields:** all five — ID, First Name, Last Name, Pin and Passcode.
-- Values may not contain a comma or an equals sign, since those characters
-  delimit the file format; the app blocks them on entry.
-- IDs are compared smartly: `1`, `1.0` and `"1"` are treated as the same ID,
-  because Excel sometimes stores whole numbers as `1.0`.
-- The Excel record format is `.xlsx` (the modern Excel workbook format), which
-  opens in Excel and any compatible spreadsheet app.
+- **All five fields are required.** Values can't contain a comma or an equals
+  sign, since those delimit the file format.
+- Generated files land in your browser's **Downloads** folder. If prompted to
+  "allow multiple downloads", say yes — that's the `.txt` and the `.xlsx`.
+- The app runs entirely in your browser. Nothing is uploaded anywhere; the
+  SheetJS spreadsheet library is bundled inside `index.html` so it also works
+  offline.
+- The record format is `.xlsx` (the modern Excel workbook format), which opens
+  in Excel and any compatible spreadsheet app.
