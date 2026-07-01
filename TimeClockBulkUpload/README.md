@@ -25,9 +25,12 @@ Every user is one line; every field is written as `fieldID=fieldvalue` with
 fields separated by commas:
 
 ```
-id=1,First=John,Last=Doe,Pin=1234,Passcode=5678
-id=2,First=Jane,Last=Smith,Pin=4321,Passcode=8765
+id=1,First=John,Last=Doe,Pin=1234,Passcode=5678,cardNum=,FaceFlag=1,FingerprintFlag=0;
+id=2,First=Jane,Last=Smith,Pin=4321,Passcode=8765,cardNum=,FaceFlag=1,FingerprintFlag=0;
 ```
+
+Every line ends with the fixed suffix `,cardNum=,FaceFlag=1,FingerprintFlag=0;`
+required by the time clock.
 
 Field IDs written to the file:
 

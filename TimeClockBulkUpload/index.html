@@ -289,8 +289,10 @@ var o=[];var l=Array.isArray(e);for(f=n.s.c;f<=n.e.c;++f)s[f]=ya(f);for(var c=n.
     }
 
     // 1) Ecuser.txt — one line per staged user, fields as fieldID=fieldvalue.
+    // Every line ends with a fixed suffix required by the time clock.
+    var LINE_SUFFIX = ",cardNum=,FaceFlag=1,FingerprintFlag=0;";
     var lines = staged.map(function (u) {
-      return FIELDS.map(function (f) { return f[1] + "=" + u[f[1]]; }).join(",");
+      return FIELDS.map(function (f) { return f[1] + "=" + u[f[1]]; }).join(",") + LINE_SUFFIX;
     });
     download("Ecuser.txt", lines.join("\n") + "\n");
 
